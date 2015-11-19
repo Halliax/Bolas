@@ -55,13 +55,13 @@ plot(X2positions,Y2positions);
     Vx2 = S(7);
     Vy2 = S(8);
     
-    dVx1 = (Vx2^2 + Vy2^2) / r * ((X2-X1) / sqrt((X2 - X1)^2 + (Y2 - Y1)^2));
+    dVx1 = (Vx1^2 + Vy1^2) / r * ((X2-X1) / sqrt((X2 - X1)^2 + (Y2 - Y1)^2));
     
-    dVy1 = (Vx2^2 + Vy2^2) / r * ((Y2-Y1) / sqrt((X2 - X1)^2 + (Y2 - Y1)^2));
+    dVy1 = (Vx1^2 + Vy1^2) / r * ((Y2-Y1) / sqrt((X2 - X1)^2 + (Y2 - Y1)^2));
     
-    dVx2 = (Vx1^2 + Vy1^2) / r * ((X1-X2) / sqrt((X1 - X2)^2 + (Y1 - Y2)^2));
+    dVx2 = (Vx2^2 + Vy2^2) / r * ((X1-X2) / sqrt((X1 - X2)^2 + (Y1 - Y2)^2));
 
-    dVy2 = (Vx1^2 + Vy1^2) / r * ((Y1-Y2) / sqrt((X1 - X2)^2 + (Y1 - Y2)^2));
+    dVy2 = (Vx2^2 + Vy2^2) / r * ((Y1-Y2) / sqrt((X1 - X2)^2 + (Y1 - Y2)^2));
     
     
     res = [Vx1; Vy1 + 6; dVx1; dVy1; Vx2; Vy2 + 6; dVx2; dVy2];
