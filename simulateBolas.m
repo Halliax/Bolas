@@ -37,7 +37,7 @@ initialThetaDiff2 = atan(initialVy2/initialVx2) - atan((initialY2-initialYc)/(in
 
 % calculate angular velocity based on thetaDiff
 initialw1 = (sqrt(initialVx1^2 + initialVy1^2) / r) * (sin(initialThetaDiff1));
-initialw2 = (sqrt(initialVx1^2 + initialVy1^2) / r) * (sin(initialThetaDiff2));
+initialw2 = (sqrt(initialVx2^2 + initialVy2^2) / r) * (sin(initialThetaDiff2));
 
 %% ODE45
 % store simulation results in time and stock vectors
@@ -80,8 +80,8 @@ fig3 = figure();
 title('Bolas Positions');
 fig3.OuterPosition = [1210,200,570,510];
 hold on;
-comet(X1positions,Y1positions);
-comet(X2positions,Y2positions);
+plot(X1positions,Y1positions);
+plot(X2positions,Y2positions);
 
 %% flow function
     function res = bolasDerivs(~, S)
@@ -110,17 +110,17 @@ comet(X2positions,Y2positions);
 
     % calculate angular velocity based on thetaDiff
     w1 = (sqrt(Vx1^2 + Vy1^2) / r) * (sin(ThetaDiff1));
-    w2 = (sqrt(Vx1^2 + Vy1^2) / r) * (sin(ThetaDiff2));
+    w2 = (sqrt(Vx2^2 + Vy2^2) / r) * (sin(ThetaDiff2));
 
     
     % calculate radial acceleration
-    dVx1 = w1^2 / r * ((Xc-X1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
+    dVx1 = w1^2 * r * ((Xc-X1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
     
-    dVy1 = w1^2 / r * ((Yc-Y1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
+    dVy1 = w1^2 * r * ((Yc-Y1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
     
-    dVx2 = w2^2 / r * ((Xc-X2) / sqrt((Xc - X2)^2 + (Yc - Y2)^2));
+    dVx2 = w2^2 * r * ((Xc-X2) / sqrt((Xc - X2)^2 + (Yc - Y2)^2));
 
-    dVy2 = w2^2 / r * ((Yc-Y2) / sqrt((Xc - X2)^2 + (Yc - Y2)^2));
+    dVy2 = w2^2 * r * ((Yc-Y2) / sqrt((Xc - X2)^2 + (Yc - Y2)^2));
     
 %     dVx1 = (Vx1^2 + Vy1^2) / r * ((Xc-X1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
 %     
