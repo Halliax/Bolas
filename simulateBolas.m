@@ -60,28 +60,31 @@ Y2velocities = Stocks(:,8);
 %% plot results
 
 % plot X positions
-fig1 = figure();
-title('Bolas X Position over Time');
-fig1.OuterPosition = [10,200,570,510];
-hold on;
-plot(Times,X1positions);
-plot(Times,X2positions);
-
+% fig1 = figure();
+% title('Bolas X Position over Time');
+% fig1.OuterPosition = [10,200,570,510];
+% hold on;
+% plot(Times,X1positions);
+% plot(Times,X2positions);
+% 
 % plot Y positions
-fig2 = figure();
-title('Bolas Y Position over Time');
-fig2.OuterPosition = [610,200,570,510];
-hold on;
-plot(Times,Y1positions);
-plot(Times,Y2positions);
-
+% fig2 = figure();
+% title('Bolas Y Position over Time');
+% fig2.OuterPosition = [610,200,570,510];
+% hold on;
+% plot(Times,Y1positions);
+% plot(Times,Y2positions);
+% 
 % plot X vs Y positions
-fig3 = figure();
-title('Bolas Positions');
-fig3.OuterPosition = [1210,200,570,510];
+% fig3 = figure();
+% title('Bolas Positions');
+% fig3.OuterPosition = [1210,200,570,510];
+% hold on;
+% plot(X1positions,Y1positions);
+% plot(X2positions,Y2positions);
 hold on;
-plot(X1positions,Y1positions);
-plot(X2positions,Y2positions);
+animate_func(Times,Stocks);
+
 
 %% flow function
     function res = bolasDerivs(~, S)
