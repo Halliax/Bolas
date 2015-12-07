@@ -59,6 +59,11 @@ Y2positions = Stocks(:,6);
 X2velocities = Stocks(:,7);
 Y2velocities = Stocks(:,8);
 
+size(X1positions)
+size(Y1positions)
+size(X2positions)
+size(Y2positions)
+
 %% plot results
 
 % plot X positions
@@ -87,7 +92,7 @@ plot(X2positions,Y2positions);
 
 figure();
 hold on;
-animate_func(Times,Stocks);
+%animate_func(Times,Stocks);
 
 
 %% flow function
@@ -112,22 +117,25 @@ animate_func(Times,Stocks);
     %% define angular velocities
 
     % find the angle between the velocity vector and the radius
-    ThetaDiff1 = atan(Vy1/Vx1) - atan((Y1-Yc)/(X1-Xc));
-    ThetaDiff2 = atan(Vy2/Vx2) - atan((Y2-Yc)/(X2-Xc));
+    thetaV1 = atan(Vy1/Vx1);
+    thetaV2 = atan(Vy2/Vx2);
+    thetaR1 = atan((Y1-Yc)/(X1-Xc));
+    thetaR2 = atan((Y2-Yc)/(X2-Xc));
+    thetaDiff1 = thetaV1 - thetaR1;
+    thetaDiff2 = thetaV2 - thetaR2;
 
     % calculate angular velocity based on thetaDiff
-    w1 = (sqrt(Vx1^2 + Vy1^2) / r) * (sin(ThetaDiff1));
-    w2 = (sqrt(Vx2^2 + Vy2^2) / r) * (sin(ThetaDiff2));
-
+    w1 = (sqrt(Vx1^2 + Vy1^2) / r) * (sin(thetaDiff1));
+    w2 = (sqrt(Vx2^2 + Vy2^2) / r) * (sin(thetaDiff2));
     
     % calculate radial acceleration
-    dVx1 = w1^2 * r * ((Xc-X1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
+    dVx1 = w1^2 * r * -(cos(thetaR1));
     
-    dVy1 = w1^2 * r * ((Yc-Y1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
+    dVy1 = w1^2 * r * -(sin(thetaR1));
     
-    dVx2 = w2^2 * r * ((Xc-X2) / sqrt((Xc - X2)^2 + (Yc - Y2)^2));
-
-    dVy2 = w2^2 * r * ((Yc-Y2) / sqrt((Xc - X2)^2 + (Yc - Y2)^2));
+    dVx2 = w2^2 * r * -(cos(thetaR2));
+    
+    dVy2 = w2^2 * r * -(sin(thetaR2));
     
 %     dVx1 = (Vx1^2 + Vy1^2) / r * ((Xc-X1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
 %     
