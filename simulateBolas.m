@@ -44,7 +44,8 @@ options = odeset('RelTol', 1e-7);
 %% ODE45
 % store simulation results in time and stock vectors
 [Times, Stocks] = ode45(@bolasDerivs, [0, simulationTime], [initialX1, initialY1, ...
-     initialVx1, initialVy1, initialX2, initialY2, initialVx2, initialVy2], options);
+     initialVx1, initialVy1, initialX2, initialY2, initialVx2, initialVy2, ...
+     initialXc, initialYc, initialVxc, initialVyc], options);
 % [Times, Stocks] = ode45(@bolasDerivs, [0, simulationTime], [initialX1, initialY1, ...
 %     initialVx1, initialVy1, initialX2, initialY2, initialVx2, initialVy2]);
 
@@ -109,24 +110,24 @@ animate_func(Times,Stocks);
     Vy2 = S(8);
     
     % center of mass position and velocity conditions
-    Xc = ((mass1 * X1) + (mass2 * X2)) / totalMass;
-    Yc = ((mass1 * Y1) + (mass2 * Y2)) / totalMass;
-    Vxc = ((mass1 * Vx1) + (mass2 * Vx2)) / totalMass;
-    Vyc = ((mass1 * Vy1) + (mass2 * Vy2)) / totalMass;
+    Xc = S(9);
+    Yc = S(10);
+    Vxc = S(11);
+    Vyc = S(12);
     
     %% define angular velocities
 
     % find the angle between the velocity vector and the radius
-    thetaV1 = atan2((Vx1-Vxc),(Vy1-Vyc));
-    thetaV2 = atan2((Vx2-Vxc),(Vy2-Vyc));
+    thetaV1 = atan2(Vx1,Vy1);
+    thetaV2 = atan2(Vx2,Vy2);
     thetaR1 = atan2((X1-Xc),(Y1-Yc));
     thetaR2 = atan2((X2-Xc),(Y2-Yc));
     thetaDiff1 = thetaV1 - thetaR1;
     thetaDiff2 = thetaV2 - thetaR2;
 
     % calculate angular velocity based on thetaDiff
-    w1 = (sqrt(Vx1^2 + Vy1^2) / r) * (sin(thetaDiff1));
-    w2 = (sqrt(Vx2^2 + Vy2^2) / r) * (sin(thetaDiff2));
+    w1 = (sqrt(Vx1^2 + Vy1^2) * sin(thetaDiff1)) / r;
+    w2 = (sqrt(Vx2^2 + Vy2^2) * sin(thetaDiff2)) / r;
     
     % calculate radial acceleration
     dVx1 = w1^2 * r * -(cos(thetaR1));
@@ -137,6 +138,10 @@ animate_func(Times,Stocks);
     
     dVy2 = w2^2 * r * -(sin(thetaR2));
     
+    dVxc = 0;
+    
+    dVyc = 0;
+    
 %     dVx1 = (Vx1^2 + Vy1^2) / r * ((Xc-X1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
 %     
 %     dVy1 = (Vx1^2 + Vy1^2) / r * ((Yc-Y1) / sqrt((Xc - X1)^2 + (Yc - Y1)^2));
@@ -146,7 +151,8 @@ animate_func(Times,Stocks);
 %     dVy2 = (Vx2^2 + Vy2^2) / r * ((Yc-Y2) / sqrt((Xc - X2)^2 + (Yc - Y2)^2));
     
     % return bolas positions and velocities
-    res = [Vx1 + Vxc; Vy1 + Vyc; dVx1; dVy1; Vx2 + Vxc; Vy2 + Vyc; dVx2; dVy2];
+    res = [Vx1 + Vxc; Vy1 + Vyc; dVx1; dVy1; Vx2 + Vxc; Vy2 + Vyc; dVx2; dVy2;
+            Vxc; Vyc; dVxc; dVyc];
     %keyboard;
 
     end
