@@ -117,12 +117,12 @@ animate_func(Times,Stocks);
     %% define angular velocities
 
     % find the angle between the velocity vector and the radius
-    thetaV1 = atan((Vy1-Vyc)/(Vx1-Vxc))
-    thetaV2 = atan((Vy2-Vyc)/(Vx2-Vxc))
-    thetaR1 = atan((Y1-Yc)/(X1-Xc))
-    thetaR2 = atan((Y2-Yc)/(X2-Xc))
-    thetaDiff1 = thetaV1 - thetaR1
-    thetaDiff2 = thetaV2 - thetaR2
+    thetaV1 = atan2((Vx1-Vxc),(Vy1-Vyc));
+    thetaV2 = atan2((Vx2-Vxc),(Vy2-Vyc));
+    thetaR1 = atan2((X1-Xc),(Y1-Yc));
+    thetaR2 = atan2((X2-Xc),(Y2-Yc));
+    thetaDiff1 = thetaV1 - thetaR1;
+    thetaDiff2 = thetaV2 - thetaR2;
 
     % calculate angular velocity based on thetaDiff
     w1 = (sqrt(Vx1^2 + Vy1^2) / r) * (sin(thetaDiff1));
@@ -147,7 +147,7 @@ animate_func(Times,Stocks);
     
     % return bolas positions and velocities
     res = [Vx1 + Vxc; Vy1 + Vyc; dVx1; dVy1; Vx2 + Vxc; Vy2 + Vyc; dVx2; dVy2];
-    keyboard;
+    %keyboard;
 
     end
 end
