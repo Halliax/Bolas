@@ -5,7 +5,7 @@ function simulateBolas(Bola1Conditions, Bola2Conditions, masses, simulationTime)
 initialX1 = Bola1Conditions(1); % m
 initialY1 = Bola1Conditions(2); % m
 initialVx1 = Bola1Conditions(3); % m/s
-initialVy1 = Bola2Conditions(4); % m/s
+initialVy1 = Bola1Conditions(4); % m/s
 
 % assign X and Y position and velocity for Bola 2
 initialX2 = Bola2Conditions(1); % m
@@ -92,7 +92,7 @@ plot(X2positions,Y2positions);
 
 figure();
 hold on;
-%animate_func(Times,Stocks);
+animate_func(Times,Stocks);
 
 
 %% flow function
@@ -117,12 +117,12 @@ hold on;
     %% define angular velocities
 
     % find the angle between the velocity vector and the radius
-    thetaV1 = atan(Vy1/Vx1);
-    thetaV2 = atan(Vy2/Vx2);
-    thetaR1 = atan((Y1-Yc)/(X1-Xc));
-    thetaR2 = atan((Y2-Yc)/(X2-Xc));
-    thetaDiff1 = thetaV1 - thetaR1;
-    thetaDiff2 = thetaV2 - thetaR2;
+    thetaV1 = atan((Vy1-Vyc)/(Vx1-Vxc))
+    thetaV2 = atan((Vy2-Vyc)/(Vx2-Vxc))
+    thetaR1 = atan((Y1-Yc)/(X1-Xc))
+    thetaR2 = atan((Y2-Yc)/(X2-Xc))
+    thetaDiff1 = thetaV1 - thetaR1
+    thetaDiff2 = thetaV2 - thetaR2
 
     % calculate angular velocity based on thetaDiff
     w1 = (sqrt(Vx1^2 + Vy1^2) / r) * (sin(thetaDiff1));
@@ -147,6 +147,7 @@ hold on;
     
     % return bolas positions and velocities
     res = [Vx1 + Vxc; Vy1 + Vyc; dVx1; dVy1; Vx2 + Vxc; Vy2 + Vyc; dVx2; dVy2];
+    keyboard;
 
     end
 end
