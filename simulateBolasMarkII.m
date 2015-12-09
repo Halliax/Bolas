@@ -1,6 +1,6 @@
 function simulateBolasMarkII(masses, length, throwingEnergy)
 %% define variables
-simulationTime = 7.5; % seconds
+simulationTime = 0.75; % seconds
 
 mass1 = masses(1); % kg
 mass2 = masses(2); % kg
@@ -23,7 +23,7 @@ crossA2 = pi * radius2^2;
 Ra_init = [-length1,0]; % position vector of mass 1
 Rb_init = [length2,0]; % position vector of mass 2
 Va_init = [0,0]; % velocity vector of mass 1
-Vb_init = [0,4]; % velocity vector of mass 2
+Vb_init = [0,sqrt((2 * throwingEnergy) / mass2)]; % velocity vector of mass 2
 R_init = [0,0]; % position vector of center of mass
 V_init = [0,(mass2 * Vb_init(2)) / totalMass]; % velocity vector of CoM
 theta_init = 0; % radians, angle b/w +X and mass 2
