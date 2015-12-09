@@ -29,11 +29,19 @@ V_init = [0,(mass2 * Vb_init(2)) / totalMass]; % velocity vector of CoM
 theta_init = 0; % radians, angle b/w +X and mass 2
 w_init = (Vb_init(2) - V_init(2)) / length1; % initial angular velocity, V/R
 
+%% ODE events function
+
+options = odeset('Events', @events);
+
+    function [value,isterminal,direction] = events(t,y)
+        
+    end
+
 %% ODE45
 % store simulation results in time and stock vectors
 [Times, Stocks] = ode45(@bolasDerivs, [0, simulationTime], ...
     [R_init(1),R_init(2),V_init(1),V_init(2),Ra_init(1),Ra_init(2), ...
-    Rb_init(1),Rb_init(2), theta_init,w_init]);
+    Rb_init(1),Rb_init(2), theta_init,w_init], options);
 
 %% sort simulation results out of stock vectors
 CenterPositions = [Stocks(:,1),Stocks(:,2)];
