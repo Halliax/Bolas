@@ -1,8 +1,8 @@
 function animate_func(Times,Stocks)
-X1 = Stocks(:,7);
-Y1 = Stocks(:,8);
-X2 = Stocks(:,9);
-Y2 = Stocks(:,10);
+X1 = Stocks(:,5);
+Y1 = Stocks(:,6);
+X2 = Stocks(:,7);
+Y2 = Stocks(:,8);
 
 minmax = [min([X1;X2]), max([X1;X2]), min([Y1;Y2]), max([Y1;Y2])];
 
