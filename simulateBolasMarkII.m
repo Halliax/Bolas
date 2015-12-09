@@ -35,34 +35,31 @@ fig1 = figure();
 title('Bolas X Position over Time');
 fig1.OuterPosition = [10,200,570,510];
 hold on;
-plot(Times,Mass1Positions(1));
-plot(Times,Mass2Positions(1));
-plot(Times,CenterPositions(1));
+plot(Times,Mass1Positions(:,1));
+plot(Times,Mass2Positions(:,1));
+plot(Times,CenterPositions(:,1));
 
 % plot Y positions
 fig2 = figure();
 title('Bolas Y Position over Time');
 fig2.OuterPosition = [610,200,570,510];
 hold on;
-plot(Times,Mass1Positions(2));
-plot(Times,Mass2Positions(2));
-plot(Times,CenterPositions(2));
+plot(Times,Mass1Positions(:,2));
+plot(Times,Mass2Positions(:,2));
+plot(Times,CenterPositions(:,2));
 
 % plot X vs Y positions
 fig3 = figure();
 title('Bolas Positions');
 fig3.OuterPosition = [1210,200,570,510];
 hold on;
-plot(Mass1Positions);
-plot(Mass2Positions);
-plot(CenterPositions);
+plot(Mass1Positions(:,1), Mass1Positions(:,2));
+plot(Mass2Positions(:,1), Mass2Positions(:,2));
+plot(CenterPositions(:,1), CenterPositions(:,2));
 
-% plot bullshit
-%plot(Times,Stocks);
-
-% figure();
-% hold on;
-% animate_func(Times,Stocks);
+figure();
+hold on;
+animate_func(Times,Stocks);
 
 %% flow function
     function res = bolasDerivs(~, S)
