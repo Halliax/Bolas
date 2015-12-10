@@ -14,3 +14,6 @@
 
 # PowerPoint temporary
 ~$*.ppt*
+
+# InDesign lock file
+~$*.idlk*
