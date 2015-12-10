@@ -1,13 +1,21 @@
-function simulateBolasMarkII(masses, length, throwingEnergy)
+function res = simulateBolasMarkII(masses, length, targetDistance)
 %% define variables
-simulationTime = 0.75; % seconds
+if length <= 0.5
+    res = false;
+    return
+end
+throwingEnergy = 80;
+simulationTime = 1; % seconds
+minimumTime = 0.5; % seconds
+fastEnough = true; %% angular velocity boolean test on target hit
+% validation throw: 18.7m distance, 1.17m length, 0.16kg mass (0.08 each)
 
 mass1 = masses(1); % kg
 mass2 = masses(2); % kg
 totalMass = mass1 + mass2; % kg
 length1 = (length * mass2) / totalMass; % length between CoM and mass1
 length2 = length - length1; % length between CoM and mass2
-moment = mass1 * (length1^2) + mass2 * (length2^2); % I = sum(mr^2)
+moment = mass1 * length1^2 + (mass2 * (length2^2)); % I = sum(mr^2)
 
 airDensity = 1.2041; % kg/m^3
 dragCoefficient = 0.47; % dimensionless, coefficient of sphere
@@ -32,16 +40,33 @@ w_init = (Vb_init(2) - V_init(2)) / length1; % initial angular velocity, V/R
 %% ODE events function
 
 options = odeset('Events', @events);
+%options = odeset('RelTol', 1e-7);
 
-    function [value,isterminal,direction] = events(t,y)
+    function [value,isterminal,direction] = events(~,y)
+        Mass1Position = [y(5),y(6)];
+        Mass2Position = [y(7),y(8)];
+        targetPosition = [0, targetDistance];
         
+        dist1 = norm(Mass1Position - targetPosition);
+        dist2 = norm(Mass2Position - targetPosition);
+        
+        value(1) = min(dist1-radius1, dist2-radius2);
+        direction(1) = 0;
+        isterminal(1) = 1;
+        
+        fudgefactor = .3;
+        value(2) = dot(Mass1Position - targetPosition, Mass2Position - ...
+            targetPosition) / (dist1*dist2) + 1 - fudgefactor;
+        direction(2) = 0;
+        isterminal(2) = 1;
+
     end
 
 %% ODE45
 % store simulation results in time and stock vectors
-[Times, Stocks] = ode45(@bolasDerivs, [0, simulationTime], ...
+[Times, Stocks, TE,YE,IE] = ode45(@bolasDerivs, [0, simulationTime], ...
     [R_init(1),R_init(2),V_init(1),V_init(2),Ra_init(1),Ra_init(2), ...
-    Rb_init(1),Rb_init(2), theta_init,w_init], options);
+    Rb_init(1),Rb_init(2), theta_init,w_init],options);
 
 %% sort simulation results out of stock vectors
 CenterPositions = [Stocks(:,1),Stocks(:,2)];
@@ -82,7 +107,19 @@ plot(CenterPositions(:,1), CenterPositions(:,2));
 
 figure();
 hold on;
-animate_func(Times,Stocks);
+animate_func(Times,Stocks,targetDistance, [radius1,radius2]);
+
+%% returns
+
+if isempty(IE)
+    res = false;
+    return
+elseif IE == 2 && TE >= minimumTime && fastEnough == true
+    res = true;
+    return
+else
+    res = false;
+end
 
 %% flow function
     function res = bolasDerivs(~, S)
@@ -117,7 +154,11 @@ animate_func(Times,Stocks);
     Torque = cross([R1,0],[Fd1,0])+cross([R2,0],[Fd2,0]);
     alpha = Torque(3) / moment;
     
+    if w <= 5
+        fastEnough = false;
+    end
+    
     res = [V(1); V(2); A(1); A(2); Va(1); Va(2); Vb(1); Vb(2); w; alpha];
-    %keyboard
+    
     end
 end
