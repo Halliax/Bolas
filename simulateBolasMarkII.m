@@ -5,6 +5,8 @@ if length <= 0.5
     return
 end
 throwingEnergy = 80;
+% Energies = throwingEnergy;
+% EnergyTimes = 0;
 simulationTime = 1; % seconds
 minimumTime = 0.5; % seconds
 fastEnough = true; %% angular velocity boolean test on target hit
@@ -106,6 +108,11 @@ plot(Mass2Positions(:,1), Mass2Positions(:,2));
 plot(CenterPositions(:,1), CenterPositions(:,2));
 
 figure();
+title('Bolas Energy over Time');
+hold on;
+plot(EnergyTimes,Energies);
+
+figure();
 hold on;
 animate_func(Times,Stocks,targetDistance, [radius1,radius2]);
 
@@ -157,6 +164,11 @@ end
     if w <= 5
         fastEnough = false;
     end
+    
+%     currentEnergy = (.5 * mass1 * norm(Va)^2) + (.5 * mass2 * norm(Vb)^2);
+%     
+%     Energies = [Energies, currentEnergy];
+%     EnergyTimes = [EnergyTimes, t];
     
     res = [V(1); V(2); A(1); A(2); Va(1); Va(2); Vb(1); Vb(2); w; alpha];
     
